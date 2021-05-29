@@ -2,35 +2,40 @@ package it.prova.datamigrationcsvjdbc.test;
 
 import it.prova.datamigrationcsvjdbc.model.Assicurato;
 import it.prova.datamigrationcsvjdbc.model.NotProcessed;
+import it.prova.datamigrationcsvjdbc.service.CsvReaderService;
 import it.prova.datamigrationcsvjdbc.service.MyServiceFactory;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.sql.Date;
+import it.prova.datamigrationcsvjdbc.service.NuovoService;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Test {
     public static void main(String[] args) throws Exception {
-        BufferedReader csvReader = new BufferedReader(new FileReader("assicurati.csv"));
-        String row;
-        while ((row = csvReader.readLine()) != null) {
-            String[] data = row.split(",");
+        NuovoService service = MyServiceFactory.getNuovoService();
 
-            if(data[3].length() != 16){
-                NotProcessed notProcessed = new NotProcessed();
-                notProcessed.setCodiceFiscale(data[2]);
-                notProcessed.setOldId(Long.parseLong(data[0]));
-                MyServiceFactory.getNuovoService().inserisciNotProcessed(notProcessed);
-            } else {
-                Assicurato assicurato = new Assicurato();
-                assicurato.setNome(data[1]);
-                assicurato.setCognome(data[2]);
-                assicurato.setCodiceFiscale(data[3]);
-                assicurato.setData(Date.valueOf(data[4]));
-                assicurato.setNumeroSinistri(Integer.valueOf(data[5]));
-                MyServiceFactory.getNuovoService().inserisciAssicurato(assicurato);
+        //csv reader legge il file csv e converte la lista di array di stringhe in una lista di oggetti assicurato
+        List<Assicurato> assicuratiDaVecchioDb = CsvReaderService.readCsv("assicurati.csv");
+
+        //ora posso usare gli stream sulla lista di assicurati estratta dal csv
+        List<Assicurato> assicurati = assicuratiDaVecchioDb.stream().filter(assicurato -> assicurato.getCodiceFiscale().length() == 16).collect(Collectors.toList());
+        List<Assicurato> assicuratiNotProcessed = assicuratiDaVecchioDb.stream().filter(assicurato -> assicurato.getCodiceFiscale().length() != 16).collect(Collectors.toList());
+
+        //inserisco nel db
+        assicurati.stream().forEach(assicuratoItem -> {
+            try {
+                service.inserisciAssicurato(assicuratoItem);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        }
-        csvReader.close();
+        });
+        assicuratiNotProcessed.stream().forEach(assicuratoNonProcessatoItem -> {
+            try {
+                NotProcessed notProcessedItem = new NotProcessed();
+                notProcessedItem.setCodiceFiscale(assicuratoNonProcessatoItem.getCodiceFiscale());
+                notProcessedItem.setOldId(assicuratoNonProcessatoItem.getId());
+                service.inserisciNotProcessed(notProcessedItem);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

@@ -10,6 +10,4 @@ public class MyServiceFactory {
         nuovoService.setNuovoDAO(new NuovoDAO());
         return nuovoService;
     }
-
-
 }

@@ -1,7 +1,5 @@
 package it.prova.datamigrationcsvjdbc.service;
 
-
-
 import it.prova.datamigrationcsvjdbc.connection.MyConnection;
 import it.prova.datamigrationcsvjdbc.dao.Constants;
 import it.prova.datamigrationcsvjdbc.dao.NuovoDAO;
