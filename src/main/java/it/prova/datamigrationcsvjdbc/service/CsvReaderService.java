@@ -25,7 +25,7 @@ public class CsvReaderService {
 
         List<Assicurato> assicuratiDaVecchioDb = new ArrayList<>();
         for (int i = 0; i < assicuratiDaVecchioDbString.size(); i++){
-            String[] assicuratoDaVecchioDbString = assicuratiDaVecchioDbString.get(0);
+            String[] assicuratoDaVecchioDbString = assicuratiDaVecchioDbString.get(i);
             Assicurato assicurato = new Assicurato();
             assicurato.setId(Long.parseLong(assicuratoDaVecchioDbString[0]));
             assicurato.setNome(assicuratoDaVecchioDbString[1]);
