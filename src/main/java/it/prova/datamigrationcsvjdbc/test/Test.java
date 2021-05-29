@@ -4,13 +4,13 @@ import it.prova.datamigrationcsvjdbc.model.Assicurato;
 import it.prova.datamigrationcsvjdbc.model.NotProcessed;
 import it.prova.datamigrationcsvjdbc.service.CsvReaderService;
 import it.prova.datamigrationcsvjdbc.service.MyServiceFactory;
-import it.prova.datamigrationcsvjdbc.service.NuovoService;
+import it.prova.datamigrationcsvjdbc.service.NuovoDbService;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Test {
     public static void main(String[] args) throws Exception {
-        NuovoService service = MyServiceFactory.getNuovoService();
+        NuovoDbService service = MyServiceFactory.getNuovoService();
 
         //csv reader legge il file csv e converte la lista di array di stringhe in una lista di oggetti assicurato
         List<Assicurato> assicuratiDaVecchioDb = CsvReaderService.readCsv("assicurati.csv");

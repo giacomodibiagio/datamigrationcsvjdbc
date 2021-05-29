@@ -7,7 +7,7 @@ import it.prova.datamigrationcsvjdbc.model.NotProcessed;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class NuovoDAO extends AbstractMySQLDAO {
+public class NuovoDbDAO extends AbstractMySQLDAO {
 
     public void setConnection(Connection connection) {
         this.connection = connection;

@@ -1,13 +1,13 @@
 package it.prova.datamigrationcsvjdbc.service;
 
 
-import it.prova.datamigrationcsvjdbc.dao.NuovoDAO;
+import it.prova.datamigrationcsvjdbc.dao.NuovoDbDAO;
 
 public class MyServiceFactory {
 
-    public static NuovoService getNuovoService() {
-        NuovoService nuovoService = new NuovoService();
-        nuovoService.setNuovoDAO(new NuovoDAO());
-        return nuovoService;
+    public static NuovoDbService getNuovoService() {
+        NuovoDbService nuovoDbService = new NuovoDbService();
+        nuovoDbService.setNuovoDAO(new NuovoDbDAO());
+        return nuovoDbService;
     }
 }

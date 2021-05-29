@@ -2,19 +2,19 @@ package it.prova.datamigrationcsvjdbc.service;
 
 import it.prova.datamigrationcsvjdbc.connection.MyConnection;
 import it.prova.datamigrationcsvjdbc.dao.Constants;
-import it.prova.datamigrationcsvjdbc.dao.NuovoDAO;
+import it.prova.datamigrationcsvjdbc.dao.NuovoDbDAO;
 import it.prova.datamigrationcsvjdbc.model.Assicurato;
 import it.prova.datamigrationcsvjdbc.model.NotProcessed;
 
 import java.sql.Connection;
 
-public class NuovoService {
+public class NuovoDbService {
 
-    private NuovoDAO nuovoDAO;
+    private NuovoDbDAO nuovoDbDAO;
 
 
-    public void setNuovoDAO(NuovoDAO nuovoDAO) {
-        this.nuovoDAO = nuovoDAO;
+    public void setNuovoDAO(NuovoDbDAO nuovoDbDAO) {
+        this.nuovoDbDAO = nuovoDbDAO;
 
     }
 
@@ -28,10 +28,10 @@ public class NuovoService {
         try (Connection connection = MyConnection.getConnection(Constants.DRIVER_NAME, Constants.CONNECTION_URL_NUOVO)) {
 
             // inietto la connection nel dao
-            nuovoDAO.setConnection(connection);
+            nuovoDbDAO.setConnection(connection);
 
             // eseguo quello che realmente devo fare
-            result = nuovoDAO.insertAssicurato(input);
+            result = nuovoDbDAO.insertAssicurato(input);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,10 +50,10 @@ public class NuovoService {
         try (Connection connection = MyConnection.getConnection(Constants.DRIVER_NAME, Constants.CONNECTION_URL_NUOVO)) {
 
             // inietto la connection nel dao
-            nuovoDAO.setConnection(connection);
+            nuovoDbDAO.setConnection(connection);
 
             // eseguo quello che realmente devo fare
-            result = nuovoDAO.insertNotProcessed(input);
+            result = nuovoDbDAO.insertNotProcessed(input);
 
         } catch (Exception e) {
             e.printStackTrace();
